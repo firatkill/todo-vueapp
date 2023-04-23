@@ -8,9 +8,9 @@
         @click="checkTodo"
         class="checkButton d-flex align-items-center justify-content-center me-2"
       >
-        <img v-show="todo.isCompleted" src="@/assets/checkIcon.svg" />
+        <img v-show="currentTodo.isCompleted" src="@/assets/checkIcon.svg" />
         <img
-          v-if="!todo.isCompleted"
+          v-if="!currentTodo.isCompleted"
           style="display: none; opacity: 0.7"
           class="checkButtonImg"
           src="@/assets/checkIcon.svg"
@@ -19,21 +19,22 @@
       <p
         style="flex-shrink: 0"
         :style="
-          todo.isCompleted && 'text-decoration-line:line-through;opacity:0.5'
+          currentTodo.isCompleted &&
+          'text-decoration-line:line-through;opacity:0.5'
         "
         class="p-0 m-0"
       >
-        {{ todo.name }}
+        {{ currentTodo.name }}
       </p>
     </div>
     <div class="d-flex align-items-center">
       <span
         :style="todo.isCompleted && 'opacity:.5'"
         class="categorySpan text-white me-4"
-        >{{ todo.category }}</span
+        >{{ currentTodo.category }}</span
       >
       <img
-        @click="deleteTodo(todo.id)"
+        @click="deleteTodo(currentTodo.id)"
         class="trashBin"
         src="@/assets/trashBin.svg"
       />

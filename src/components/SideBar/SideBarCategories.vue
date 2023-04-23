@@ -24,9 +24,10 @@
         overflow-x: hidden;
       "
     >
-      <div @click="resetCategories" class="listItem">All</div>
+      <div @click="changeCategory('All')" class="listItem">All</div>
       <div
         class="listItem"
+        @click="changeCategory(category)"
         v-for="category in todoCategories"
         :key="todoCategories.indexOf(category)"
       >
@@ -69,6 +70,9 @@ export default {
     resetCategories() {
       this.filteredCategories = this.todoCategories.slice(0);
       this.categorySearch = "";
+    },
+    changeCategory(category) {
+      this.$store.dispatch("changeCategory", category);
     },
   },
 };

@@ -1,7 +1,14 @@
 <template>
   <div class="TodoContainer">
-    <h1 style="font-size: 3rem; color: #ea5959">Groceries</h1>
-    <input class="todoSearchInput" type="text" placeholder="Search.." />
+    <h1 style="font-size: 3rem; color: #ea5959">{{ category }}</h1>
+    <input
+      v-if="category != 'All'"
+      class="addTodoInput"
+      v-model="newTodo"
+      v-on:keyup.enter="addTodo"
+      type="text"
+      :placeholder="'Add a new task inside ' + category + ' category'"
+    />
     <div class="list-group mt-3">
       <TodoListItem v-for="todo in todos" :key="todo.id" :todo="todo" />
     </div>
@@ -10,13 +17,32 @@
 
 <script>
 import TodoListItem from "@/components/TodoContainer/TodoListItem.vue";
-import { todos } from "@/data";
+
 export default {
   name: "TodoContainer",
   data() {
     return {
-      todos: todos,
+      newTodo: "",
     };
+  },
+  methods: {
+    addTodo() {
+      this.$store.dispatch("addTodo", {
+        name: this.newTodo,
+        caption: "Check in with mom and catch up on news",
+        category: this.category,
+        isCompleted: false,
+      });
+      this.newTodo = "";
+    },
+  },
+  computed: {
+    category() {
+      return this.$store.state.currentCategory;
+    },
+    todos() {
+      return this.$store.state.currentTodos;
+    },
   },
   components: { TodoListItem },
 };
@@ -31,7 +57,7 @@ export default {
 
   flex-direction: column;
 }
-.todoSearchInput {
+.addTodoInput {
   width: 80%;
   height: 3rem;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
@@ -43,7 +69,7 @@ export default {
   margin-top: 1rem;
   transition: box-shadow, outline 0.5s ease-in-out;
 }
-.todoSearchInput:focus {
+.addTodoInput:focus {
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.5);
   outline: 5px solid rgba(0, 0, 0, 0.05);
 }
