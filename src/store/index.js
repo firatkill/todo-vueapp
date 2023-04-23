@@ -29,12 +29,13 @@ const store = createStore({
   },
   mutations: {
     checkTodo(state, id) {
-      const todo = state.todos.find((todo) => todo.id === id);
+      const todo = state.currentTodos.find((todo) => todo.id === id);
       todo.isCompleted = !todo.isCompleted;
     },
     deleteTodo(state, id) {
       const todo = state.todos.find((todo) => todo.id === id);
       state.todos.splice(state.todos.indexOf(todo), 1);
+      state.currentTodos.splice(state.currentTodos.indexOf(todo), 1);
     },
     addTodo(state, todo) {
       state.todos.push({ id: state.todos.length + 1, ...todo });
@@ -53,7 +54,12 @@ const store = createStore({
   },
   actions: {
     deleteTodo(context, todo) {
-      context.commit("deleteTodo", todo.id);
+      if (context.state.currentTodos.length == 1) {
+        context.commit("deleteTodo", todo.id);
+        context.commit("changeCategory", "All");
+      } else {
+        context.commit("deleteTodo", todo.id);
+      }
     },
     checkTodo(context, todo) {
       context.commit("checkTodo", todo.id);

@@ -10,7 +10,7 @@ export const todos = [
     id: 2,
     name: "Do laundry",
     caption: "Wash and fold laundry",
-    category: "Choreasdgkmadlkmglkmadglkmadlkmglmkadgs",
+    category: "Chores",
     isCompleted: true,
   },
   {
