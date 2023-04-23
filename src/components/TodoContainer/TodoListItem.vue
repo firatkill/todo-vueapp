@@ -32,7 +32,11 @@
         class="categorySpan text-white me-4"
         >{{ todo.category }}</span
       >
-      <img @click="deleteTodo" class="trashBin" src="@/assets/trashBin.svg" />
+      <img
+        @click="deleteTodo(todo.id)"
+        class="trashBin"
+        src="@/assets/trashBin.svg"
+      />
     </div>
   </div>
 </template>
@@ -48,10 +52,10 @@ export default {
   },
   methods: {
     checkTodo() {
-      this.currentTodo.isCompleted = !this.currentTodo.isCompleted;
+      this.$store.dispatch("checkTodo", { id: this.currentTodo.id });
     },
-    deleteTodo(e) {
-      e.currentTarget.parentElement.parentElement.remove();
+    deleteTodo(id) {
+      this.$store.dispatch("deleteTodo", { id: id });
     },
   },
 };

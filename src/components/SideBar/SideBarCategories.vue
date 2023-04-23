@@ -8,7 +8,6 @@
         margin-bottom: 1rem;
       "
       v-model="categorySearch"
-      @input="filterCategories"
       type="text"
       placeholder="Search.."
     />
@@ -28,7 +27,7 @@
       <div @click="resetCategories" class="listItem">All</div>
       <div
         class="listItem"
-        v-for="category in filteredCategories"
+        v-for="category in todoCategories"
         :key="todoCategories.indexOf(category)"
       >
         {{ category }}
@@ -44,38 +43,33 @@
 </template>
 
 <script>
-import { todos } from "@/data";
-
 export default {
   name: "SideBarCategories",
   data() {
     return {
       categorySearch: "",
-      todos: todos,
-      todoCategories: [],
-      filteredCategories: [],
     };
   },
-  methods: {
-    filterCategories() {
-      this.filteredCategories = this.todoCategories.filter((category) =>
-        category.toLowerCase().includes(this.categorySearch.toLowerCase())
-      );
+  computed: {
+    todos() {
+      return this.$store.state.todos;
     },
+    todoCategories() {
+      const categories = this.$store.getters.getCategories;
+      if (this.categorySearch == "") {
+        return categories;
+      } else {
+        return categories.filter((category) =>
+          category.toLowerCase().includes(this.categorySearch.toLowerCase())
+        );
+      }
+    },
+  },
+  methods: {
     resetCategories() {
       this.filteredCategories = this.todoCategories.slice(0);
       this.categorySearch = "";
     },
-  },
-  beforeMount() {
-    const tempCategories = [];
-    this.todos.forEach((elem) => {
-      if (tempCategories.indexOf(elem.category) == -1) {
-        tempCategories.push(elem.category);
-      }
-    });
-    this.todoCategories = tempCategories.slice(0);
-    this.filteredCategories = tempCategories.slice(0);
   },
 };
 </script>
