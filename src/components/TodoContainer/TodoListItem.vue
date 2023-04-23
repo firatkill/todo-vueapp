@@ -1,22 +1,36 @@
 <template>
   <div class="list-item py-2 d-flex align-items-center justify-content-between">
-    <div style="" class="d-flex align-items-center">
+    <div
+      style="max-width: 70%; overflow: hidden"
+      class="d-flex align-items-center"
+    >
       <div
         @click="checkTodo"
         class="checkButton d-flex align-items-center justify-content-center me-2"
       >
-        <img v-show="isCompleted" src="@/assets/checkIcon.svg" />
+        <img v-show="todo.isCompleted" src="@/assets/checkIcon.svg" />
+        <img
+          v-if="!todo.isCompleted"
+          style="display: none; opacity: 0.7"
+          class="checkButtonImg"
+          src="@/assets/checkIcon.svg"
+        />
       </div>
       <p
-        :style="isCompleted && 'text-decoration-line:line-through;opacity:0.5'"
+        style="flex-shrink: 0"
+        :style="
+          todo.isCompleted && 'text-decoration-line:line-through;opacity:0.5'
+        "
         class="p-0 m-0"
       >
-        Purchase Miladsgklmfadlmkgmkldagmlkdamlkgk & Corn Flakes
+        {{ todo.name }}
       </p>
     </div>
     <div class="d-flex align-items-center">
-      <span :style="isCompleted && 'opacity:.5'" class="categorySpan me-4"
-        >Groceries</span
+      <span
+        :style="todo.isCompleted && 'opacity:.5'"
+        class="categorySpan text-white me-4"
+        >{{ todo.category }}</span
       >
       <img @click="deleteTodo" class="trashBin" src="@/assets/trashBin.svg" />
     </div>
@@ -26,14 +40,15 @@
 <script>
 export default {
   name: "TodoListGroup",
+  props: ["todo"],
   data() {
     return {
-      isCompleted: false,
+      currentTodo: this.todo,
     };
   },
   methods: {
     checkTodo() {
-      this.isCompleted = !this.isCompleted;
+      this.currentTodo.isCompleted = !this.currentTodo.isCompleted;
     },
     deleteTodo(e) {
       e.currentTarget.parentElement.parentElement.remove();
@@ -44,9 +59,9 @@ export default {
 
 <style scoped>
 .list-item {
-  border: 2px solid rgba(234, 89, 89, 0.2);
-  border-radius: 8px;
-  padding: 0px 10px;
+  border-bottom: 1px solid black;
+  width: 100%;
+  padding: 25px 10px !important;
 }
 .checkButton {
   border: 2px solid #ea5959;
@@ -54,9 +69,10 @@ export default {
   height: 28px;
   border-radius: 6px;
   cursor: pointer;
+  flex-shrink: 0;
 }
-.checkButton:hover {
-  box-shadow: 0px 0px 5px 5px rgba(234, 89, 89, 0.2);
+.checkButton:hover > .checkButtonImg {
+  display: block !important;
 }
 .categorySpan {
   background-color: rgb(234, 89, 89);

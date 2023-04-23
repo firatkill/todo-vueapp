@@ -16,8 +16,9 @@ export default { components: { SideBar, MainContainer } };
 .App {
   display: flex;
 
-  height: 100vh;
-  width: 100vw;
+  height: 100vh !important;
+  width: 100vw !important;
+  overflow: hidden;
 }
 * {
   box-sizing: border-box;
