@@ -1,5 +1,8 @@
 <template>
-  <div class="d-flex flex-column justify-content-center" style="height: 50%">
+  <div
+    class="position-relative d-flex flex-column justify-content-center"
+    style="height: 50%"
+  >
     <input
       style="
         font-size: 1.3rem;
@@ -35,11 +38,13 @@
       </div>
     </div>
     <div
+      @click="addInputSwitch"
       style="font-weight: 700; font-size: 1.3rem; color: #ea5959"
-      class="addButton mt-3"
+      class="addButton mt-1 ms-1"
     >
       <img class="pe-2" src="@/assets/plusCircle.svg" />add new
     </div>
+    <input v-show="isAddInput" class="addCategoryInput ms-1" type="text" />
   </div>
 </template>
 
@@ -49,6 +54,7 @@ export default {
   data() {
     return {
       categorySearch: "",
+      isAddInput: false,
     };
   },
   computed: {
@@ -74,6 +80,9 @@ export default {
     changeCategory(category) {
       this.$store.dispatch("changeCategory", category);
     },
+    addInputSwitch() {
+      this.isAddInput = !this.isAddInput;
+    },
   },
 };
 </script>
@@ -93,5 +102,17 @@ export default {
   transform-origin: left;
   transition: transform 0.5s ease-out;
   color: #ea5959;
+}
+.addCategoryInput {
+  position: absolute;
+  bottom: -2.5rem;
+  border-radius: 6px;
+
+  width: 100%;
+
+  border: none;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.5);
+  outline: 5px solid rgba(0, 0, 0, 0.05);
+  padding: 5px 10px;
 }
 </style>
